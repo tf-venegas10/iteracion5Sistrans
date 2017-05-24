@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html ng-app="mainApp">
+<head>
+<title>FestivAndes</title>
+<meta charset="utf-8">
+<!-- BOOTSTRAP CSS -->
+<link rel="stylesheet"
+	href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+<!--bower installers -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script
+	src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<!-- stylesheet Internas -->
+<link rel="stylesheet" href="css/app.css" />
+<!-- modules -->
+<script src="src/modules/espectaculos/espectaculos.mod.js"> </script>
+<script src="src/modules/espectaculos/generator.js"> </script>
+<!-- main app-->
+<script src="src/app.js"> </script>
+
+
+
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#"> FestivAndes </span></a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a ui-sref="espectaculosList">Espectáculos</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div ui-view='mainView'></div>
+
+</body>
+</html>

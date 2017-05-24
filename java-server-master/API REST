@@ -1,0 +1,23 @@
+POST /usuarios?usuario='administrador'                  
+POST /usuarios?usuario='operario'                        
+POST /usuarios?usuario='cliente' <default>                        
+&acces_token=                        
+POST /companias?acces_token=                        
+POST /espectaculos?acces_token=                        
+POST /sitios?acces_token= & intereses= <0/1>                       
+POST /funciones?acces_token=                        
+POST /usuarios/{id}/preferenciaSitio/{id}?acces_token=<cliente>                        
+POST /usuarios/{id}/preferenciaCategoria/{id}?acces_token=<cliente>                        
+PUT /boletas/{id}?usuario=                     
+(cambiar vendido a true)                        
+(POST funcion genera todas las boletas para esa funcion)                        
+PUT /funciones/{id}?acces_token=<operario> (cambia realizado a true)                        
+GET /funciones  ********************************************************************************************                      
+<--optional ?fechaInicio='dd-mm--aaaa'&fechaFin='dd-mm--aaaa'&compania=' '&categoria= ' ' &idioma=' '&traduccion=<0/1>&restricciones=<discapacitados/ninos/viejos/> >                        
+WHERE t.idioma LIKE '%' || $idioma                        
+GET /sitios/{ID}                        
+GET companias/{id}                        
+GET funciones/{id}                        
+GET espectaculos                        
+(reportes)                        
+GET /espetaculos?fechaInicio='dd-mm--aaaa'&fechaFin='dd-mm--aaaa'

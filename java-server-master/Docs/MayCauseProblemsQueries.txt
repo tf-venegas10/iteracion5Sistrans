@@ -1,0 +1,153 @@
+===================================================================================================================
+
+DAOBoletas
+----------------------------
+registrarCompraAbono:
+
+SELECT * FROM ABONAMIENTOS WHERE IDUSUARIO="+idUsuario+" ORDER BY ID DESC ;
+
+SELECT B.ID as id, L.PRECIO as precio FROM BOLETAS B JOIN LOCALIDADES L ON (B.IDLOCALIDAD=L.ID)
+ WHERE B.IDFUNCION="+funcion.getId()+" AND B.IDLOCALIDAD="+localidad.getId();
+ 
+----------------------------------------
+devolverAbonamiento:
+
+ SELECT B.ID AS ID, B.IDUSUARIO AS IDUSUARIO, L.PRECIO AS PRECIO FROM BOLETAS B JOIN LOCALIDADES L ON (B.IDLOCALIDAD=L.ID) 
+ WHERE IDABONAMIENTO="+idAbonamiento;
+ 
+ ---------------------------------
+ ===================================================================================================================
+ DAOCompania
+ ---------------------------------------------------------
+ getAsistenciaFestivAndes
+ 
+ SELECT U.ID, U.NOMBRE, U.CORREOELECTRONICO, U.FECHANACIMIENTO, R.NOMBRE AS ROL FROM (((((USUARIOS U "
+				+"INNER JOIN BOLETAS B ON U.ID=B.IDUSUARIO) "
+				+"INNER JOIN FUNCIONES F ON F.ID = B.IDFUNCION) "
+				+"INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO) "
+				+"INNER JOIN PRESENTAN P ON P.IDESPECTACULO=E.ID)"
+				+"INNER JOIN COMPANIASTEATRO C ON C.ID=P.IDCOMPANIA)"
+				+"INNER JOIN ROLES R ON R.ID = U.IDROL WHERE C.ID = "+id
+				+" AND ( TO_DATE(to_char(F.FECHA, 'RRRR-MM-dd'),'RRRR-MM-dd') BETWEEN "
+				+ "TO_DATE('"+fechaInicio+"','RRRR-MM-dd') AND TO_DATE('"+fechaFin+"','RRRR-MM-dd'))"
+				
+				
+-------------------------------------------------------------------
+getInasistenciaFestivAndes
+
+"SELECT * FROM ((SELECT U.ID, U.NOMBRE, U.CORREOELECTRONICO, U.FECHANACIMIENTO, R.NOMBRE AS ROL "
+				+ "FROM USUARIOS U INNER JOIN ROLES R ON U.IDROL=R.ID) "
+				+ "MINUS (SELECT U.ID, U.NOMBRE, U.CORREOELECTRONICO, U.FECHANACIMIENTO, R.NOMBRE AS ROL "
+				+ "FROM (((((USUARIOS U INNER JOIN BOLETAS B ON U.ID=B.IDUSUARIO) "
+				+ "INNER JOIN FUNCIONES F ON F.ID = B.IDFUNCION) "
+				+ "INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO) "
+				+ "INNER JOIN PRESENTAN P ON P.IDESPECTACULO=E.ID) "
+				+ "INNER JOIN COMPANIASTEATRO C ON C.ID=P.IDCOMPANIA) "
+				+ "INNER JOIN ROLES R ON R.ID = U.IDROL WHERE C.ID = "+id.toString()
+				+ " AND ( TO_DATE(to_char(F.FECHA, 'RRRR-MM-dd'),'RRRR-MM-dd') BETWEEN "
+				+ "TO_DATE('"+fechaInicio+"','RRRR-MM-dd') AND TO_DATE('"+fechaFin+"','RRRR-MM-dd')) "
+				+ "GROUP BY U.ID, U.NOMBRE, U.CORREOELECTRONICO, U.FECHANACIMIENTO, R.NOMBRE)) INAS";
+				
+--------------------------
+
+===================================================================================================
+DAOEspectaculos
+
+--------------------------------------------------------------------------------------------------
+getEspectaculosMasPopulares
+
+ "SELECT * FROM (SELECT E.ID AS IDE, COUNT (CASE WHEN B.VENDIDO='Y' THEN 1 END) AS CANTIDAD"
+					+" FROM (ESPECTACULOS E LEFT JOIN FUNCIONES F ON E.ID = F.IDESPECTACULO) LEFT JOIN BOLETAS B ON F.ID = B.IDFUNCION "
+					+ "WHERE TO_TIMESTAMP("+inicio+",'RRRR-mm-dd')<=F.FECHA AND TO_TIMESTAMP("+fin+",'RRRR-mm-dd')>=F.FECHA "
+					+ "GROUP BY E.ID ORDER BY COUNT (CASE WHEN B.VENDIDO='Y' THEN 1 END) DESC) REPORTE JOIN ESPECTACULOS ES ON REPORTE.IDE=ES.ID"
+					
+					
+	------------------------------------------------
+=====================================================================================================
+
+DAOTablaFunciones
+----------------------------------------------
+getFunciones
+
+"SELECT F.ID AS FID, E.ID AS EID, E.NOMBRE AS ENOMBRE, E.DURACION AS EDURACION,E.IDIOMA AS EIDIOMA, E.COSTO AS ECOSTO, E.DESCRIPCION AS EDESCRIPCION, "
+					+ "F.FECHA AS FFECHA, F.REALIZADO AS FREALIZADO, S.ID AS SID, S.NOMBRE AS SNOMBRE, S.ABIERTO AS SABIERTO "
+					+ " FROM (FUNCIONES F LEFT JOIN ESPECTACULOS E ON (F.IDESPECTACULO=E.ID) "
+					+ "LEFT JOIN PRESENTAN PRE ON PRE.IDESPECTACULO=E.ID "
+					+ "LEFT JOIN COMPANIASTEATRO C ON PRE.IDCOMPANIA=C.ID "
+					+ "LEFT JOIN REQUIERE REQ ON REQ.IDESPECTACULO=E.ID "
+					+ "LEFT JOIN REQUERIMIENTOSTECNICOS R ON REQ.IDREQUERIMIENTO=R.ID "
+					+ "LEFT JOIN HACEPARTE H ON H.IDESPECTACULO= E.ID "
+					+ "LEFT JOIN CATEGORIAs CAT ON CAT.ID=H.IDCATEGORIA "
+					+ "LEFT JOIN SITIOS S ON S.ID=F.IDSITIO "
+					+ "LEFT JOIN ESPARA ON ESPARA.IDSITiO=S.ID "
+					+ "LEFT JOIN APTOS ON APTOS.ID=ESPARA.IDAPTOS) "
+					+" WHERE ("
+					//	+ "WHERE (F.FECHA> TO_DATE('"+pFechaIncio+"') "
+					//	+ " AND F.FECHA< TO_DATE('"+pFechaFin+"') "
+					//	+ "AND"
+					+ "(C.NOMBRE IS NULL OR C.NOMBRE LIKE '"+pCompania+ "'  )"
+					+ "AND (CAT.NOMBRE IS NULL OR CAT.NOMBRE LIKE '"+ pCategoria+ "' )"
+					+ "AND (E.IDIOMA IS NULL OR E.IDIOMA LIKE '"+ pIdioma+ "' )"
+					+ "AND (R.NOMBRE IS NULL OR R.NOMBRE LIKE '"+ pRequerimientos+ "') "
+					+ "AND (APTOS.NOMBRE IS NULL OR APTOS.NOMBRE LIKE '"+ pAptos+ "') "
+					+ ")";
+					
+----------------------------------------
+eliminarFuncion
+
+"SELECT B.ID AS ID, B.IDUSUARIO, B.IDABONAMIENTO, L.PRECIO FROM BOLETAS B JOIN LOCALIDADES L ON B.IDLOCALIDAD=L.ID WHERE idFuncion="+id;
+
+=======================================================================================================================
+
+DAOSITIOS
+
+------------------------------------------------------------
+crearSitio:
+
+SELECT ID FROM SILLETERIA WHERE NOMBRE LIKE "+sitio.getTipoSilleteria();
+
+
+===================================
+DAOUsuario
+SELECT id FROM ROLES WHERE NOMBRE LIKE
+-------------------------------------------
+getAsistenciaFestival
+
+"SELECT F.ID, E.NOMBRE AS NOMESP, E.DURACION,F.FECHA, COUNT(F.ID) AS NUMBOLETAS FROM "
+					+"(((USUARIOS U INNER JOIN BOLETAS B ON U.ID=B.IDUSUARIO)"
+					+"INNER JOIN FUNCIONES F ON F.ID=B.IDFUNCION)"
+					+"INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO)"
+					+"INNER JOIN (SELECT FUN.ID, "
+					+"TO_TIMESTAMP(to_char(FUN.FECHA + (.000694444444444 * ESP.DURACION), 'RRRR-MM-dd HH24:MI:SS'), 'RRRR-MM-dd HH24:MI:SS') AS FECHAFIN " 
+					+"FROM FUNCIONES FUN INNER JOIN ESPECTACULOS ESP ON ESP.ID=FUN.IDESPECTACULO) OFFS ON OFFS.ID = F.ID "
+					+"WHERE (TO_TIMESTAMP(to_char(CURRENT_TIMESTAMP, 'RRRR-MM-dd HH24:MI:SS'),'RRRR-MM-dd HH24:MI:SS') "
+					+"BETWEEN F.FECHA AND FECHAFIN) AND U.ID = "+idUsuario.toString()+" GROUP BY (F.ID,E.NOMBRE,E.DURACION,F.FECHA)";
+										
+"SELECT F.ID, E.NOMBRE AS NOMESP, E.DURACION,F.FECHA, COUNT(F.ID) AS NUMBOLETAS FROM "
+					+"(((USUARIOS U INNER JOIN BOLETAS B ON U.ID=B.IDUSUARIO)"
+					+"INNER JOIN FUNCIONES F ON F.ID=B.IDFUNCION)"
+					+"INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO)"
+					+"INNER JOIN (SELECT FUN.ID, "
+					+"TO_TIMESTAMP(to_char(FUN.FECHA + (.000694444444444 * ESP.DURACION), 'RRRR-MM-dd HH24:MI:SS'), 'RRRR-MM-dd HH24:MI:SS') AS FECHAFIN " 
+					+"FROM FUNCIONES FUN INNER JOIN ESPECTACULOS ESP ON ESP.ID=FUN.IDESPECTACULO) OFFS ON OFFS.ID = F.ID "
+					+"WHERE (TO_TIMESTAMP(to_char(CURRENT_TIMESTAMP, 'RRRR-MM-dd HH24:MI:SS'),'RRRR-MM-dd HH24:MI:SS') "
+					+"BETWEEN F.FECHA AND FECHAFIN) AND U.ID = "+idUsuario.toString()+" GROUP BY (F.ID,E.NOMBRE,E.DURACION,F.FECHA)";
+					
+					
+"SELECT F.ID ,E.NOMBRE AS NOMESP, E.DURACION,F.FECHA, COUNT(F.ID) AS NUMBOLETAS FROM "
+					+"((USUARIOS U INNER JOIN BOLETAS B ON U.ID=B.IDUSUARIO)"
+					+"INNER JOIN FUNCIONES F ON F.ID=B.IDFUNCION)"
+					+"INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO "
+					+"WHERE F.FECHA>TO_TIMESTAMP(to_char(CURRENT_TIMESTAMP, 'RRRR-MM-dd HH24:MI:SS'),'RRRR-MM-dd HH24:MI:SS') AND U.ID = "+idUsuario.toString()
+					+" GROUP BY (F.ID,E.NOMBRE,E.DURACION,F.FECHA)";
+					
+					
+"SELECT F.ID, E.NOMBRE, E.DURACION,F.FECHA, COUNT(F.ID) AS NUMDEVUELTAS FROM (((USUARIOS U "
+					+"INNER JOIN CERTIFICADOSDEDEVOLUCION C ON U.ID=C.IDUSUARIO)"
+					+"INNER JOIN BOLETAS B ON B.ID=C.IDBOLETA)"
+					+"INNER JOIN FUNCIONES F ON F.ID=B.IDFUNCION)"
+					+"INNER JOIN ESPECTACULOS E ON E.ID=F.IDESPECTACULO "
+					+"WHERE U.ID = "+idUsuario.toString()+" GROUP BY (F.ID,E.NOMBRE, E.DURACION,F.FECHA)";
+					
+					
+=============================================

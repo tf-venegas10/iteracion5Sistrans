@@ -1,0 +1,207 @@
+crearUsuario: ?usuario=administrador 
+
+{
+	"nombre": "Tomas",
+	"correoElectronico":"saf@u.com",
+	"fechaNacimiento": "1995-07-12",
+	"contrasena":"123",
+}
+
+ {
+ 	"id": 1,
+	"nombre": "antonio",
+	"correoElectronico":"saf@u.com",
+	"fechaNacimiento": "1995-07-12",
+	"contrasena":"123",
+	"rol":"administrador"
+}
+
+
+crearCompaniaTeatro: ?access_token='token'
+
+{
+	"nombre" : "MISI",
+	"paisOrigen" : "Colombia",
+	"urlPagina" :  "www.misi.com.co",
+	"representante" : "Heriberto Garcia",
+	"fechaLlegada" : "2017-03-10",
+	"fechaSalida" : "2017-03-20"
+}
+
+{
+	"nombre" : "Authentiqué",
+	"paisOrigen" : "Francia",
+	"urlPagina" :  "www.autenthique.fr",
+	"representante" : "Francois Hollande",
+	"fechaLlegada" : "2017-03-12",
+	"fechaSalida" : "2017-03-28"
+}
+
+crearEspectaculo: ?access_token='token'
+ 
+{
+ 	"nombre" : "Don Giovanni",
+ 	"duracion" : 120,
+ 	"idioma" : "Italiano",
+ 	"costo" : 80000,
+ 	"descripcion" : "Clásico italiano",
+ 	"categorias" : [
+ 		{
+ 			"id" : 1,
+ 			"nombre" : null
+ 		},
+ 		{
+ 			"id" : 6,
+ 			"nombre" : null
+ 		}
+ 	],
+ 	"companias" : [
+ 	{
+ 		"id" : 1,
+ 		"nombre" : null,
+ 		"paisOrigen" : null,
+ 		"urlPagina" : null,
+ 		"representante" : null,
+ 		"fechaLlegada" : "2017-03-12",
+		"fechaSalida" : "2017-03-28"
+ 		
+	},
+
+	{
+		"id" : 2,
+		"nombre" : null,
+ 		"paisOrigen" : null,
+ 		"urlPagina" : null,
+ 		"representante" : null,
+ 		"fechaLlegada" : "2017-03-12",
+		"fechaSalida" : "2017-03-28"
+	}	
+ 		
+ 	],
+ 	"requerimientosTecnicos" : [
+ 	{
+ 		"id" : 2,
+ 		"nombre" : null
+ 	},
+ 	{
+ 		"id" : 6,
+ 		"nombre" : null
+ 	}
+ 	]
+ }
+ 
+ 
+crearSitios
+
+  {
+	"nombre": "Donde poncho",
+	"abierto": false,
+	"proteccionLluvia": true,
+	"horaApertura": "2000-01-01 ",
+	"horaCierre": "2300-12-12",
+	"tipoSilleteria":{
+		"id":1
+	},
+	"aptos":[{
+		"id":1,
+		"nombre":"MENORES"
+	}],
+	"localidades":[{
+		"id":1
+	},{
+		"id":3
+	},{
+		"id":4
+	}]
+}
+
+
+PUT http://localhost:8080/VideoAndes/rest/funciones/14?acces_token=1hobtqbdibf7o2251gldbi33csjv8517olr09iipkoic1q0k1749
+
+
+crear funcion 
+ {
+	"fecha":"2017-12-02 12:00:00",
+	"espectaculo": {
+		"id":1,
+		"nombre":"Dido y Eneas"
+	},
+	"sitio":{
+		"id": 1,
+		"nombre": "Donde poncho",
+		"abierto": false,
+		"proteccionLluvia": true,
+		"horaApertura": "2000-01-01 ",
+		"horaCierre": "2300-12-12",
+		"tipoSilleteria":{
+		"id":1
+		},
+		"aptos":[{
+			"id":1,
+			"nombre":"MENORES"
+		}],
+		"localidades":[{
+			"id":1
+		},{
+			"id":3
+		},{
+			"id":4
+		}]
+	}
+ 	
+ }
+
+
+comprar abonamiento:
+{
+	"funciones":[ {
+		"id":4,
+	"fecha":"2017-12-02 12:00:00",
+	"espectaculo": {
+		"id":1,
+		"nombre":"Dido y Eneas"
+	},
+	"sitio":{
+		"id":2
+	}
+ 
+ 	
+ }
+,{
+		"id":2,
+	"fecha":"2017-12-02 12:00:00",
+	"espectaculo": {
+		"id":1,
+		"nombre":"Dido y Eneas"
+	},
+	"sitio":{
+		"id":2
+	}
+ 
+ 	
+ },{
+		"id":7,
+	"fecha":"2017-12-02 12:00:00",
+	"espectaculo": {
+		"id":1,
+		"nombre":"Dido y Eneas"
+	},
+	"sitio":{
+		"id":2
+	}
+ 
+ 	
+ }]
+,
+
+	"localidades":[{
+		"id":1,
+		"tipo": null
+	},{
+		"id":3,
+		"tipo": null
+	},{
+		"id":4,
+		"tipo": null
+	}]
+}
